@@ -1,0 +1,6 @@
+{
+  "name": "RedLeaf PDF",
+  "description": "Free, 100% offline mobile-first PDF toolkit to view, merge, split, compress, convert, organize, lock, and scan PDFs on your device.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
