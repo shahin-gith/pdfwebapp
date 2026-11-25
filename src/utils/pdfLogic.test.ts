@@ -10,8 +10,8 @@ import {
   TOOLS_CATALOG,
 } from './pdfLogic';
 
-test('TOOLS_CATALOG has 8 featured tools on Home and 9 total tools', () => {
-  assert.equal(TOOLS_CATALOG.length, 9);
+test('TOOLS_CATALOG has 8 featured tools on Home and 12 total tools', () => {
+  assert.equal(TOOLS_CATALOG.length, 12);
   assert.equal(TOOLS_CATALOG.filter((t) => t.featuredOnHome).length, 8);
 });
 

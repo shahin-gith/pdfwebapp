@@ -11,7 +11,7 @@ interface ToolsScreenProps {
   onSelectTool: (id: ToolId) => void;
 }
 
-type CategoryFilter = 'all' | 'edit' | 'convert' | 'security';
+type CategoryFilter = 'all' | 'edit' | 'convert' | 'scanner' | 'security';
 
 export const ToolsScreen: React.FC<ToolsScreenProps> = ({ language, t, onSelectTool }) => {
   const [query, setQuery] = useState('');
@@ -22,6 +22,7 @@ export const ToolsScreen: React.FC<ToolsScreenProps> = ({ language, t, onSelectT
     { id: 'all', label: t.categoryAll },
     { id: 'edit', label: t.categoryEdit },
     { id: 'convert', label: t.categoryConvert },
+    { id: 'scanner', label: t.categoryScanner },
     { id: 'security', label: t.categorySecurity },
   ];
 

@@ -9,6 +9,9 @@ import {
   LayoutGrid,
   Lock,
   ScanLine,
+  ScanText,
+  QrCode,
+  Stamp,
 } from 'lucide-react';
 import type { ToolId } from '../types/pdf';
 
@@ -49,5 +52,11 @@ export const ToolIcon: React.FC<{ id: ToolId; className?: string }> = ({
       return <Lock className={className} aria-hidden="true" />;
     case 'scan':
       return <ScanLine className={className} aria-hidden="true" />;
+    case 'ocr-scan':
+      return <ScanText className={className} aria-hidden="true" />;
+    case 'qr-scanner':
+      return <QrCode className={className} aria-hidden="true" />;
+    case 'watermark':
+      return <Stamp className={className} aria-hidden="true" />;
   }
 };

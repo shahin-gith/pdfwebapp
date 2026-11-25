@@ -348,7 +348,7 @@ export const ScanToPdfTool: React.FC<ScanToPdfToolProps> = ({
                     Scan Document with Camera or Photo
                   </h2>
                   <p className="mt-1 text-xs md:text-sm text-slate-500 dark:text-slate-400">
-                    {t.dropHint}
+                    Use your camera or choose a photo · 100% offline on device
                   </p>
                 </div>
 

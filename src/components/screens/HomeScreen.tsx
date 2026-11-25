@@ -47,6 +47,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
     ? filterToolIds(query, TOOLS_CATALOG, (id) => toolCopy[id])
     : TOOLS_CATALOG.filter((tool) => tool.featuredOnHome);
 
+  const scannerTools = TOOLS_CATALOG.filter((tool) => tool.category === 'scanner');
+
   const filteredFiles = filterStoredFiles(query, recentFiles).slice(0, 6);
 
   return (
@@ -86,6 +88,45 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           <span className="font-medium">{t.privacyBanner}</span>
         </div>
       </section>
+
+      {/* Camera, OCR & QR Scanners Strip */}
+      {!query.trim() && (
+        <section aria-labelledby="camera-scanners-heading">
+          <h2
+            id="camera-scanners-heading"
+            className="text-lg md:text-xl font-bold text-slate-900 dark:text-slate-100 mb-3"
+          >
+            {t.cameraScannersTitle}
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {scannerTools.map((tool) => {
+              const copy = toolCopy[tool.id];
+              return (
+                <button
+                  key={tool.id}
+                  type="button"
+                  onClick={() => onSelectTool(tool.id)}
+                  className="group text-left rounded-3xl bg-[#F8F9FA] dark:bg-[#1A1C1E] hover:bg-white dark:hover:bg-[#242629] border border-slate-200/80 dark:border-[#2E3136] hover:border-[#D32F2F]/40 dark:hover:border-red-400/40 p-4 flex items-center gap-3.5 min-h-[76px] transition-all duration-150 shadow-xs hover:shadow-md active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-[#D32F2F]"
+                >
+                  <div
+                    className={`w-11 h-11 rounded-2xl ${tool.accentBgLight} ${tool.accentBgDark} ${tool.accentTextLight} ${tool.accentTextDark} flex items-center justify-center shrink-0 transition-transform duration-150 group-hover:scale-105`}
+                  >
+                    <ToolIcon id={tool.id} className="w-5 h-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-sm font-semibold text-slate-900 dark:text-slate-100 leading-snug">
+                      {copy.name}
+                    </div>
+                    <div className="mt-0.5 text-xs text-slate-500 dark:text-slate-400 line-clamp-1">
+                      {copy.shortDesc}
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* Grid of 8 Big Tool Cards */}
       <section aria-labelledby="quick-tools-heading">

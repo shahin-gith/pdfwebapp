@@ -40,6 +40,9 @@ import { CompressPdfTool } from './components/tools/CompressPdfTool';
 import { OrganizePdfTool } from './components/tools/OrganizePdfTool';
 import { LockUnlockPdfTool } from './components/tools/LockUnlockPdfTool';
 import { ScanToPdfTool } from './components/tools/ScanToPdfTool';
+import { OcrScanTool } from './components/tools/OcrScanTool';
+import { QrBarcodeScannerTool } from './components/tools/QrBarcodeScannerTool';
+import { WatermarkPdfTool } from './components/tools/WatermarkPdfTool';
 
 export default function App() {
   const skipSplash =
@@ -276,6 +279,42 @@ export default function App() {
             t={t}
             onBack={goBack}
             onResultReady={(out) => handleSaveToolOutput('scan', out)}
+            onOpenResult={handleOpenResultInViewer}
+            onShareResult={(out) => handleShareBytes(out.bytes, out.name, out.mimeType)}
+            onSaveResult={(out) => triggerFileDownload(out.bytes, out.name, out.mimeType)}
+          />
+        );
+      case 'ocr-scan':
+        return (
+          <OcrScanTool
+            language={language}
+            t={t}
+            onBack={goBack}
+            onResultReady={(out) => handleSaveToolOutput('ocr-scan', out)}
+            onOpenResult={handleOpenResultInViewer}
+            onShareResult={(out) => handleShareBytes(out.bytes, out.name, out.mimeType)}
+            onSaveResult={(out) => triggerFileDownload(out.bytes, out.name, out.mimeType)}
+          />
+        );
+      case 'qr-scanner':
+        return (
+          <QrBarcodeScannerTool
+            language={language}
+            t={t}
+            onBack={goBack}
+            onResultReady={(out) => handleSaveToolOutput('qr-scanner', out)}
+            onOpenResult={handleOpenResultInViewer}
+            onShareResult={(out) => handleShareBytes(out.bytes, out.name, out.mimeType)}
+            onSaveResult={(out) => triggerFileDownload(out.bytes, out.name, out.mimeType)}
+          />
+        );
+      case 'watermark':
+        return (
+          <WatermarkPdfTool
+            language={language}
+            t={t}
+            onBack={goBack}
+            onResultReady={(out) => handleSaveToolOutput('watermark', out)}
             onOpenResult={handleOpenResultInViewer}
             onShareResult={(out) => handleShareBytes(out.bytes, out.name, out.mimeType)}
             onSaveResult={(out) => triggerFileDownload(out.bytes, out.name, out.mimeType)}

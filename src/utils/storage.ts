@@ -1,3 +1,6 @@
+import { Capacitor } from '@capacitor/core';
+import { Directory, Filesystem } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
 import type { Language, StoredFile, ThemeMode } from '../types/pdf';
 
 const DB_NAME = 'redleaf_pdf_offline_db';
@@ -132,7 +135,36 @@ export function persistSavedRating(stars: number): void {
   }
 }
 
+function uint8ArrayToBase64(bytes: Uint8Array): string {
+  const chunkSize = 0x8000;
+  const parts: string[] = [];
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    parts.push(String.fromCharCode(...bytes.subarray(i, i + chunkSize)));
+  }
+  return btoa(parts.join(''));
+}
+
 export function triggerFileDownload(bytes: Uint8Array, filename: string, mimeType: string): void {
+  if (Capacitor.isNativePlatform()) {
+    const base64Data = uint8ArrayToBase64(bytes);
+    Filesystem.writeFile({
+      path: `RedLeafPDF/${filename}`,
+      data: base64Data,
+      directory: Directory.Documents,
+      recursive: true,
+    })
+      .then((res) => Share.share({ title: filename, url: res.uri }))
+      .catch(() => {
+        // Fallback to cache + share if Documents permission is unavailable
+        Filesystem.writeFile({
+          path: filename,
+          data: base64Data,
+          directory: Directory.Cache,
+        }).then((res) => Share.share({ title: filename, url: res.uri }));
+      });
+    return;
+  }
+
   const copy = new Uint8Array(bytes);
   const blob = new Blob([copy], { type: mimeType });
   const url = URL.createObjectURL(blob);
@@ -150,6 +182,21 @@ export async function shareOrDownloadFile(
   filename: string,
   mimeType: string
 ): Promise<'shared' | 'downloaded'> {
+  if (Capacitor.isNativePlatform()) {
+    const base64Data = uint8ArrayToBase64(bytes);
+    const written = await Filesystem.writeFile({
+      path: filename,
+      data: base64Data,
+      directory: Directory.Cache,
+      recursive: true,
+    });
+    await Share.share({
+      title: filename,
+      url: written.uri,
+    });
+    return 'shared';
+  }
+
   const copy = new Uint8Array(bytes);
   const file = new File([copy], filename, { type: mimeType });
   if (

@@ -9,7 +9,10 @@ export type ToolId =
   | 'compress'
   | 'organize'
   | 'lock-unlock'
-  | 'scan';
+  | 'scan'
+  | 'ocr-scan'
+  | 'qr-scanner'
+  | 'watermark';
 
 export type Language = 'en' | 'bn';
 export type ThemeMode = 'light' | 'dark';
@@ -27,7 +30,7 @@ export interface StoredFile {
 
 export interface ToolDefinition {
   id: ToolId;
-  category: 'view' | 'edit' | 'convert' | 'security';
+  category: 'view' | 'edit' | 'convert' | 'security' | 'scanner';
   featuredOnHome: boolean;
   accentBgLight: string;
   accentBgDark: string;
